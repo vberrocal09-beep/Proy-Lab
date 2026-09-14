@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Calculadora Matematica</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f4f7;
+            color: #333;
+        }
+
+        .contenedor {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .secciones {
+            display: flex;
+            gap: 25px;
+        }
+
+        .seccion {
+            background-color: white;
+            width: 50%;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+        }
+
+        .titulo {
+            background-color: white;
+            color: black;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .formula {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .campo {
+            margin-bottom: 18px;
+        }
+
+        .campo label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        .campo input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 16px;
+        }
+
+        .campo input:focus {
+            outline: none;
+            border-color: #0d6efd;
+        }
+
+        .resultado {
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #ddd;
+            margin: 25px 0;
+        }
+
+        .mensaje {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+
+            .secciones {
+                flex-direction: column;
+            }
+
+            .seccion {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="contenedor">
+
+        <h1>Calculadora Matematica</h1>
+
+
+        <div class="secciones">
+
+            <!-- FÓRMULA GENERAL -->
+            <div class="seccion">
+
+                <div class="titulo">
+                    <h2>Formula General</h2>
+                </div>
+
+                <div class="campo">
+
+                    <label for="aGeneral">
+                        Valor de a
+                    </label>
+
+                    <input
+                        type="number"
+                        id="aGeneral"
+                        step="any"
+                        placeholder="Ingrese el valor de a">
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="bGeneral">
+                        Valor de b
+                    </label>
+
+                    <input
+                        type="number"
+                        id="bGeneral"
+                        step="any"
+                        placeholder="Ingrese el valor de b">
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="cGeneral">
+                        Valor de c
+                    </label>
+
+                    <input
+                        type="number"
+                        id="cGeneral"
+                        step="any"
+                        placeholder="Ingrese el valor de c">
+
+                </div>
+
+
+                <div id="mensajeGeneral" class="mensaje"></div>
+
+
+                <hr>
+
+
+                <div class="campo">
+
+                    <label for="x1">
+                        Resultado x1
+                    </label>
+
+                    <input
+                        type="text"
+                        id="x1"
+                        class="resultado"
+                        readonly>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="x2">
+                        Resultado x2
+                    </label>
+
+                    <input
+                        type="text"
+                        id="x2"
+                        class="resultado"
+                        readonly>
+
+                </div>
+
+            </div>
+
+
+            <!-- PITÁGORAS -->
+            <div class="seccion">
+
+                <div class="titulo">
+                    <h2>Teorema de Pitagoras</h2>
+                </div>
+
+                <div class="campo">
+
+                    <label for="aPitagoras">
+                        Valor de a
+                    </label>
+
+                    <input
+                        type="number"
+                        id="aPitagoras"
+                        step="any"
+                        placeholder="Ingrese el valor de a">
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="bPitagoras">
+                        Valor de b
+                    </label>
+
+                    <input
+                        type="number"
+                        id="bPitagoras"
+                        step="any"
+                        placeholder="Ingrese el valor de b">
+
+                </div>
+
+                <hr>
+
+                <div class="campo">
+
+                    <label for="cPitagoras">
+                        Hipotenusa (c)
+                    </label>
+
+                    <input
+                        type="text"
+                        id="cPitagoras"
+                        class="resultado"
+                        readonly>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        // FÓRMULA GENERAL
+
+        const aGeneral = document.getElementById("aGeneral");
+        const bGeneral = document.getElementById("bGeneral");
+        const cGeneral = document.getElementById("cGeneral");
+
+        const x1 = document.getElementById("x1");
+        const x2 = document.getElementById("x2");
+
+        const mensajeGeneral =
+            document.getElementById("mensajeGeneral");
+
+
+        // Detectar automáticamente cuando el usuario escribe
+
+        aGeneral.addEventListener("input", calcularFormulaGeneral);
+
+        bGeneral.addEventListener("input", calcularFormulaGeneral);
+
+        cGeneral.addEventListener("input", calcularFormulaGeneral);
+
+
+        function calcularFormulaGeneral() {
+
+            const a = parseFloat(aGeneral.value);
+
+            const b = parseFloat(bGeneral.value);
+
+            const c = parseFloat(cGeneral.value);
+
+
+            // Limpiar mensajes
+
+            mensajeGeneral.textContent = "";
+
+
+            // Si faltan valores
+
+            if (isNaN(a) || isNaN(b) || isNaN(c)) {
+
+                x1.value = "";
+
+                x2.value = "";
+
+                return;
+
+            }
+
+
+            // a no puede ser cero
+
+            if (a === 0) {
+
+                x1.value = "";
+
+                x2.value = "";
+
+                mensajeGeneral.textContent =
+                    "El valor de a no puede ser 0.";
+
+                return;
+
+            }
+
+
+            // Calcular discriminante
+
+            const discriminante =
+                Math.pow(b, 2) - (4 * a * c);
+
+
+            // Si el discriminante es negativo
+
+            if (discriminante < 0) {
+
+                x1.value = "No real";
+
+                x2.value = "No real";
+
+                return;
+
+            }
+
+
+            // Fórmula general
+
+            const resultado1 =
+                (-b + Math.sqrt(discriminante))
+                / (2 * a);
+
+
+            const resultado2 =
+                (-b - Math.sqrt(discriminante))
+                / (2 * a);
+
+
+            // Mostrar resultados
+
+            x1.value = resultado1;
+
+            x2.value = resultado2;
+
+        }
+
+
+        // ==========================================
+        // TEOREMA DE PITÁGORAS
+        // ==========================================
+
+        const aPitagoras =
+            document.getElementById("aPitagoras");
+
+        const bPitagoras =
+            document.getElementById("bPitagoras");
+
+        const cPitagoras =
+            document.getElementById("cPitagoras");
+
+
+        // Detectar automáticamente cuando el usuario escribe
+
+        aPitagoras.addEventListener(
+            "input",
+            calcularPitagoras
+        );
+
+        bPitagoras.addEventListener(
+            "input",
+            calcularPitagoras
+        );
+
+
+        function calcularPitagoras() {
+
+            const a =
+                parseFloat(aPitagoras.value);
+
+            const b =
+                parseFloat(bPitagoras.value);
+
+
+            // Si falta algún valor
+
+            if (isNaN(a) || isNaN(b)) {
+
+                cPitagoras.value = "";
+
+                return;
+
+            }
+
+
+            // Fórmula:
+            // c = √(a² + b²)
+
+            const resultado =
+                Math.sqrt(
+                    Math.pow(a, 2) +
+                    Math.pow(b, 2)
+                );
+
+
+            // Mostrar automáticamente
+
+            cPitagoras.value = resultado;
+
+        }
+        
+     // ==========================================
+     // BLOQUEAR LA LETRA "E" EN LOS CAMPOS
+     // ==========================================
+
+     const camposNumericos = document.querySelectorAll(
+         'input[type="number"]'
+     );
+
+     camposNumericos.forEach(function(campo) {
+
+         campo.addEventListener("keydown", function(event) {
+
+             if (event.key === "e" || event.key === "E") {
+                 event.preventDefault();
+             }
+
+         });
+
+     });
+
+    </script>
+
+</body>
+
+</html>
